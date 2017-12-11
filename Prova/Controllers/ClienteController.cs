@@ -44,13 +44,23 @@ namespace Prova.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    cliente.DataCadastro = DateTime.Now;
-                    db.Clientes.Add(cliente);
-                    db.SaveChanges();
 
-                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, cliente);
-                    response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = cliente.ClienteId }));
-                    return response;
+                    if(cliente.ClienteId == 0)
+                    {
+                        cliente.DataCadastro = DateTime.Now;
+                        db.Clientes.Add(cliente);
+                        db.SaveChanges();
+
+                        HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, cliente);
+                        response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = cliente.ClienteId }));
+                        return response;
+                    }
+                    else
+                    {
+                        db.Entry(cliente).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
                 }
                 else
                 {

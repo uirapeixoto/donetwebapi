@@ -76,13 +76,20 @@
                 ClienteId: $('#ClienteId').val(),
                 Nome: $('#Nome').val(),
                 Sobrenome: $('#Sobrenome').val(),
-                Email: $('#Email').val()
+                Email: $('#Email').val(),
+                DataCadastro: $('#DataCadastro').val(),
+                Ativo: $('#Ativo').val()
             }
 
-            $.post(url, cliente, function (data, textStatus, jqXHR) {
-                $('.alert-success').fadeIn().html("<span>Cliente alterado com sucesso!</span>")
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: cliente,
+                success: function (data) {
+                    $('.alert-success').fadeIn().html("<span>Cliente alterado com sucesso!</span>")
+                }
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $('.alert-success').fadeIn().html(errorThrown)
+                $('.alert-danger').fadeIn().html(errorThrown)
             });
         });
     });
